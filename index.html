@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10 마스터즈 - 10 만들기 연금술의 모험</title>
+  <meta name="description" content="10을 만드는 3가지 미니게임을 연습하고 골드를 모아 10의 수호자 도전에 성공하세요!">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="game-container">
+
+    <!-- Header Stats Bar -->
+    <header class="header-bar">
+      <div class="user-profile" id="userProfileBtn" title="프로필 및 로그인 설정">
+        <span class="user-avatar" id="userAvatar">🧙‍♂️</span>
+        <div class="user-info-text">
+          <span class="user-name" id="displayUsername">연금술사</span>
+          <span class="user-badge" id="userLoginType">게스트</span>
+        </div>
+      </div>
+      <div class="currency-group">
+        <div class="currency-item gold-box">
+          <span class="currency-icon">🪙</span>
+          <span class="currency-val" id="userGold">0</span>
+          <span class="currency-label">GOLD</span>
+        </div>
+        <div class="currency-item clear-box">
+          <span class="currency-icon">⭐</span>
+          <span class="currency-val" id="userClears">0</span>
+          <span class="currency-label">CLEARS</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="soundToggleBtn" class="icon-btn" title="사운드 온/오프">🔊</button>
+        <button id="authModalBtn" class="btn btn-auth">🔑 로그인</button>
+        <button id="hallOfFameBtn" class="btn btn-gold">🏆 명예의 전당</button>
+      </div>
+    </header>
+
+    <!-- MAIN DASHBOARD -->
+    <main id="mainDashboard" class="view-screen active">
+      <div class="hero-banner">
+        <h1 class="game-title">MAKE 10 <span class="highlight">MASTERS</span></h1>
+        <p class="game-subtitle">10을 만드는 3가지 미니게임으로 실력을 키우고, 모은 골드로 <strong>10의 수호자</strong>에게 도전하세요!</p>
+      </div>
+
+      <!-- Guardian Boss Banner -->
+      <section class="boss-section">
+        <div class="boss-card">
+          <div class="boss-avatar-wrapper">
+            <div class="boss-avatar">🛡️👾</div>
+            <div class="boss-glow"></div>
+          </div>
+          <div class="boss-info">
+            <div class="boss-badge">최종 관문</div>
+            <h2 class="boss-title">10의 수호자 도전</h2>
+            <p class="boss-desc">수호자가 출제하는 <strong>10 만들기 10문제</strong>를 연속으로 파괴하라!</p>
+            <div class="boss-cost">
+              입장료: <span class="cost-val">🪙 100 Gold</span>
+            </div>
+          </div>
+          <div class="boss-action">
+            <button id="startBossBtn" class="btn btn-boss btn-large pulse-animation">
+              🛡️ 수호자 도전하기
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Mini Games Section -->
+      <section class="minigames-section">
+        <h2 class="section-title">🎮 10 만들기 미니게임 (제한시간 20~30초)</h2>
+        <div class="minigames-grid">
+          
+          <!-- Game 1 -->
+          <div class="game-card card-pop">
+            <div class="card-tag">제한시간 25초</div>
+            <div class="card-icon">🎈</div>
+            <h3 class="card-title">짝꿍 팝! (Pair Pop)</h3>
+            <p class="card-desc">화면의 숫자들 중 <strong>합이 10이 되는 짝</strong>을 두 개 눌러 스피디하게 터뜨리세요!</p>
+            <div class="card-reward">보상: 최대 ~150 Gold</div>
+            <button class="btn btn-primary start-game-btn" data-game="pairPop">게임 시작</button>
+          </div>
+
+          <!-- Game 2 -->
+          <div class="game-card card-combo">
+            <div class="card-tag">제한시간 30초</div>
+            <div class="card-icon">🧱</div>
+            <h3 class="card-title">10 블록 퍼즐 (Make 10)</h3>
+            <p class="card-desc">여러 블록을 선택해 <strong>합 10</strong>을 만드세요! 블록을 많이 조합할수록 높은 콤보!</p>
+            <div class="card-reward">보상: 최대 ~200 Gold</div>
+            <button class="btn btn-primary start-game-btn" data-game="makeCombo">게임 시작</button>
+          </div>
+
+          <!-- Game 3 -->
+          <div class="game-card card-dash">
+            <div class="card-tag">제한시간 20초</div>
+            <div class="card-icon">⚡</div>
+            <h3 class="card-title">짝꿍 스피드 퀴즈 (Target 10)</h3>
+            <p class="card-desc">`7 + ? = 10` 수식의 빈칸 정답을 순발력 있게 클릭하는 스피드 타임어택!</p>
+            <div class="card-reward">보상: 최대 ~180 Gold</div>
+            <button class="btn btn-primary start-game-btn" data-game="targetDash">게임 시작</button>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- MINI GAME PLAY ARENA -->
+    <section id="gameArenaScreen" class="view-screen">
+      <div class="arena-header">
+        <button id="exitGameBtn" class="btn btn-outline">← 메인으로</button>
+        <div class="arena-title-box">
+          <h2 id="arenaGameTitle">미니게임</h2>
+        </div>
+        <div class="arena-stats">
+          <div class="stat-pill timer-pill">
+            ⏳ <span id="arenaTimer">25</span>s
+          </div>
+          <div class="stat-pill score-pill">
+            ⭐ <span id="arenaScore">0</span> pt
+          </div>
+          <div class="stat-pill gold-pill">
+            🪙 +<span id="arenaGoldEarned">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Combo Indicator -->
+      <div id="comboContainer" class="combo-container hidden">
+        <span id="comboText" class="combo-text">2 COMBO!</span>
+      </div>
+
+      <!-- Mini Game Stage Content (Dynamic) -->
+      <div id="gamePlayArea" class="play-area">
+        <!-- Inner Game HTML injected dynamically -->
+      </div>
+    </section>
+
+    <!-- GUARDIAN BOSS ARENA -->
+    <section id="bossArenaScreen" class="view-screen">
+      <div class="boss-arena-header">
+        <button id="exitBossBtn" class="btn btn-outline">← 포기하기</button>
+        <div class="boss-stage-badge">10의 수호자 도전</div>
+        <div class="boss-timer-box">⏱️ 경과시간: <span id="bossTimeMs">0.00</span>s</div>
+      </div>
+
+      <div class="boss-battle-view">
+        <!-- Boss Character Visual -->
+        <div class="boss-monster-card">
+          <div class="boss-hp-bar-wrapper">
+            <div class="hp-label">수호자의 체력 (10개 관문)</div>
+            <div class="hp-bar-track">
+              <div id="bossHpFill" class="hp-bar-fill" style="width: 100%;"></div>
+            </div>
+            <div class="hp-text"><span id="bossHpText">10</span> / 10</div>
+          </div>
+          <div id="bossSprite" class="boss-sprite">🛡️👾</div>
+          <div id="bossSpeech" class="boss-speech">"10을 만드는 너의 연금술 실력을 증명해봐라!"</div>
+        </div>
+
+        <!-- Boss Question Card -->
+        <div class="boss-question-box">
+          <div class="question-progress">QUESTION <span id="bossQIndex">1</span> OF 10</div>
+          <div id="bossFormula" class="boss-formula">
+            7 + <span class="blank-box">?</span> = 10
+          </div>
+          <div id="bossOptions" class="boss-options-grid">
+            <!-- 4 answer choices -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME OVER / RESULT MODAL -->
+    <div id="resultModal" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div id="resultEmoji" class="modal-icon">🎉</div>
+          <h2 id="resultTitle" class="modal-title">게임 완료!</h2>
+        </div>
+        <div class="modal-body">
+          <p id="resultSubtitle" class="modal-desc">축하합니다! 훌륭하게 클리어했습니다.</p>
+          <div class="result-stats-grid">
+            <div class="result-stat-card">
+              <span class="stat-label">획득 골드</span>
+              <span id="resGold" class="stat-value gold-color">+0</span>
+            </div>
+            <div class="result-stat-card">
+              <span class="stat-label">최종 점수/시간</span>
+              <span id="resScore" class="stat-value">0 pt</span>
+            </div>
+            <div class="result-stat-card">
+              <span class="stat-label">최대 콤보</span>
+              <span id="resCombo" class="stat-value">0 COMBO</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="modalConfirmBtn" class="btn btn-primary btn-large">확인 & 메인으로</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HALL OF FAME MODAL -->
+    <div id="hallOfFameModal" class="modal-backdrop hidden">
+      <div class="modal-card large-modal">
+        <div class="modal-header">
+          <div class="modal-icon">🏆</div>
+          <h2 class="modal-title">명예의 전당 (Top 10)</h2>
+          <button id="closeHofBtn" class="close-modal-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- Ranking Tabs -->
+          <div class="hof-tabs">
+            <button class="hof-tab-btn active" data-tab="gold">🪙 골드 부자 TOP 10</button>
+            <button class="hof-tab-btn" data-tab="clears">⭐ 미니게임 클리어 TOP 10</button>
+            <button class="hof-tab-btn" data-tab="boss">🛡️ 수호자 파괴자 TOP 10</button>
+          </div>
+
+          <!-- Ranking List Table -->
+          <div class="hof-list-wrapper">
+            <table class="hof-table">
+              <thead>
+                <tr>
+                  <th>순위</th>
+                  <th>연금술사 (이름)</th>
+                  <th id="hofHeaderMetric">보유 골드</th>
+                  <th>달성일</th>
+                </tr>
+              </thead>
+              <tbody id="hofTableBody">
+                <!-- Dynamic ranks injected here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIREBASE AUTH / PROFILE MODAL -->
+    <div id="authModal" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-icon">🔥</div>
+          <h2 class="modal-title">Firebase 계정 연결</h2>
+          <button id="closeAuthBtn" class="close-modal-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-desc">로그인하면 클라우드에 점수가 동기화되고 글로벌 명예의 전당에 도전할 수 있습니다!</p>
+          
+          <div class="auth-buttons-group">
+            <button id="googleSignInBtn" class="btn btn-google btn-large">
+              <svg class="google-svg" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+              Google 계정으로 로그인
+            </button>
+            
+            <button id="anonSignInBtn" class="btn btn-outline btn-large">
+              👻 게스트(익명) 로그인
+            </button>
+            
+            <button id="signOutBtn" class="btn btn-danger btn-large hidden">
+              🚪 로그아웃
+            </button>
+          </div>
+
+          <hr class="auth-divider">
+
+          <div class="nickname-setting-box">
+            <label class="input-label">연금술사 닉네임 변경:</label>
+            <div class="input-row">
+              <input type="text" id="nicknameInput" class="nickname-input" placeholder="닉네임 (최대 10자)" maxlength="10">
+              <button id="saveProfileBtn" class="btn btn-primary">저장</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Type Module Script -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
