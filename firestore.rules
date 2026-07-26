@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // User profile and score data security rules
+    match /users/{userId} {
+      // Anyone can read leaderboard info (public scores)
+      allow read: if true;
+      
+      // Users can only write and update their own document
+      allow create, update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if false; // Disallow deletion
+    }
+    
+  }
+}

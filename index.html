@@ -284,7 +284,18 @@
 
   </div>
 
-  <!-- Type Module Script -->
+  <!-- Runtime Config Fallback & Loader -->
+  <script>
+    window.__ENV__ = window.__ENV__ || {
+      FIREBASE_API_KEY: "AIzaSyDUU1yDwRj5iSKKjXQxQ7MVG48DbKVPMRk",
+      FIREBASE_AUTH_DOMAIN: "maker-ebe8a.firebaseapp.com",
+      FIREBASE_PROJECT_ID: "maker-ebe8a",
+      FIREBASE_STORAGE_BUCKET: "maker-ebe8a.firebasestorage.app",
+      FIREBASE_MESSAGING_SENDER_ID: "383524274292",
+      FIREBASE_APP_ID: "1:383524274292:web:45256411b2fa63367b1121"
+    };
+  </script>
+  <!-- Main Module -->
   <script type="module" src="app.js"></script>
 </body>
 </html>

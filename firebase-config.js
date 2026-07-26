@@ -1,4 +1,4 @@
-// Firebase Web SDK Configuration & Module Initialization
+// Firebase Web SDK Configuration & Security Loader
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { 
   getAuth, 
@@ -21,31 +21,31 @@ import {
   getDocs 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// TODO: Replace with your actual Firebase Project config if available
-// Vercel deployment allows setting these via environment variables or direct replacement
+// Safe Environment Config Resolution
+const env = window.__ENV__ || {};
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDemoKey_ReplaceWithYourFirebaseApiKey",
-  authDomain: "make10-masters.firebaseapp.com",
-  projectId: "make10-masters",
-  storageBucket: "make10-masters.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:demoappid123456"
+  apiKey: env.FIREBASE_API_KEY || "AIzaSyDemoKey_ReplaceWithYourFirebaseApiKey",
+  authDomain: env.FIREBASE_AUTH_DOMAIN || "make10-masters.firebaseapp.com",
+  projectId: env.FIREBASE_PROJECT_ID || "make10-masters",
+  storageBucket: env.FIREBASE_STORAGE_BUCKET || "make10-masters.appspot.com",
+  messagingSenderId: env.FIREBASE_MESSAGING_SENDER_ID || "123456789012",
+  appId: env.FIREBASE_APP_ID || "1:123456789012:web:demoappid123456"
 };
 
 let app, auth, db, googleProvider;
 let isFirebaseAvailable = false;
 
 try {
-  // Only initialize if not placeholder key, or attempt initialization gracefully
   if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("DemoKey")) {
     app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
     googleProvider = new GoogleAuthProvider();
     isFirebaseAvailable = true;
-    console.log("🔥 Firebase initialized successfully.");
+    console.log("🔥 Firebase 보안 연동 완료.");
   } else {
-    console.warn("⚠️ Firebase Demo Config detected. App will run in hybrid/offline mode until your actual Firebase credentials are set in firebase-config.js!");
+    console.warn("⚠️ Firebase 환경변수가 연결 대기 중입니다. 키가 입력되면 안전하게 연동됩니다.");
   }
 } catch (error) {
   console.error("Firebase init error:", error);
